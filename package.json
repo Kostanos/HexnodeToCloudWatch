@@ -1,0 +1,29 @@
+{
+  "name": "hexnode_cloudwatch",
+  "version": "1.0.0",
+  "description": "Send Hexnode metrics to cloudwatch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kostanos/HexnodeToCloudWatch.git"
+  },
+  "keywords": [
+    "hexnode",
+    "cloudwatch",
+    "aws"
+  ],
+  "author": "Kostya Kostyushko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Kostanos/HexnodeToCloudWatch/issues"
+  },
+  "homepage": "https://github.com/Kostanos/HexnodeToCloudWatch#readme",
+  "dependencies": {
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5",
+    "throat": "^4.1.0"
+  }
+}

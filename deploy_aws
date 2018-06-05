@@ -1,0 +1,30 @@
+#!/bin/bash
+
+die () {
+    echo >&2 "$@"
+    exit 1
+}
+
+[ "$#" -eq 3 ] || die -e "Please specify the environment to deploy ex: (prod, dev, staging etc..) as a first argument the AWS region and profile as 2nd and 3rd parameters.\nEx: ./deploy_aws prod us-east-1 myProfile"
+
+SCRIPT=`realpath $0`
+SCRIPTPATH=`dirname $SCRIPT`/
+cd "${SCRIPTPATH}/"
+ENV_TO_DEPLOY="$1"
+REGION="$2"
+PROFILE="$3"
+
+echo "Run docker with node 8.10 for install dependencies"
+docker run -v $(pwd):/root/app -w /root/app node:8.10-alpine npm install
+
+FUNCTION_NAME="HexnodeToCloudWatch_$ENV_TO_DEPLOY"
+ZIPFILE="../fn-lambda-$FUNCTION_NAME.zip"
+echo "Deplying to function: $FUNCTION_NAME"
+
+echo -e "\e[34mCreating $ZIPFILE ...\e[39m"
+rm $ZIPFILE
+sudo chown $USER -R .
+zip -q -r $ZIPFILE . -x '*.git*'
+
+echo -e "\e[34mUploading to AWS Lambda...\e[39m"
+aws lambda update-function-code --function-name=$FUNCTION_NAME --zip-file=fileb://$ZIPFILE --region=$REGION --profile=$PROFILE
